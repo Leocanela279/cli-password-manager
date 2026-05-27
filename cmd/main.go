@@ -63,12 +63,41 @@ func main() {
 
 		if err != nil {
 			fmt.Println(err)
+			return
 		}
 	case "ls":
 		err := vault.List()
 
 		if err != nil {
 			fmt.Println(err)
+			return
+		}
+	case "remove":
+		if len(os.Args) < 3 {
+			fmt.Println("usage: vault remove <service>")
+			return
+		}
+
+		service := os.Args[2]
+		err := vault.Remove(service)
+
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+	case "rm":
+		if len(os.Args) < 3 {
+			fmt.Println("usage: vault rm <service>")
+			return
+		}
+
+		service := os.Args[2]
+		err := vault.Remove(service)
+
+		if err != nil {
+			fmt.Println(err)
+			return
 		}
 	default:
 		fmt.Println("unknown command")

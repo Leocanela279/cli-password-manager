@@ -108,3 +108,39 @@ func List() error {
 
 	return nil
 }
+
+func Remove(service string) error {
+	data, err := os.ReadFile("../vault-test/.vault")
+	if err != nil {
+		return fmt.Errorf("failed to read vault file: %w", err)
+	}
+
+	var vault map[string]Entry
+
+	err = json.Unmarshal(data, &vault)
+	if err != nil {
+		return fmt.Errorf("failed to parse vault data: %w", err)
+	}
+
+	_, exists := vault[service]
+
+	if !exists {
+		return fmt.Errorf("service '%s' does not exist", service)
+	}
+
+	delete(vault, service)
+
+	updatedData, err := json.MarshalIndent(vault, "", "  ")
+	if err != nil {
+		return fmt.Errorf("failed to encode vault data: %w", err)
+	}
+
+	err = os.WriteFile("../vault-test/.vault", updatedData, 0644)
+	if err != nil {
+		return fmt.Errorf("failed to update vault file: %w", err)
+	}
+
+	fmt.Println("Service removed successfully")
+
+	return nil
+}
