@@ -61,3 +61,23 @@ func Get(service string) error {
 	fmt.Printf("service %s pass: %s\n", service, vault[service].Password)
 	return nil
 }
+
+func Help() {
+	commands := map[string]string{
+		"init": "Initialize your personal vault",
+		"add":  "Add a new service with credentials",
+		"get":  "Get credentials for a service",
+		"list": "List all saved services",
+		"help": "Show available commands",
+	}
+
+	fmt.Println("Usage:")
+	fmt.Println("  vault <command>")
+	fmt.Println()
+
+	fmt.Println("Available Commands:")
+
+	for command, description := range commands {
+		fmt.Printf("  %-6s: %s\n", command, description)
+	}
+}

@@ -55,6 +55,9 @@ func main() {
 			fmt.Println(err)
 			return
 		}
+
+	case "help":
+		vault.Help()
 	default:
 		fmt.Println("unknown command")
 	}
