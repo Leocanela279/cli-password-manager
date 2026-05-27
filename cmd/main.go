@@ -58,6 +58,12 @@ func main() {
 
 	case "help":
 		vault.Help()
+	case "list":
+		err := vault.List()
+
+		if err != nil {
+			fmt.Println(err)
+		}
 	default:
 		fmt.Println("unknown command")
 	}

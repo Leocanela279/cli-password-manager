@@ -81,3 +81,30 @@ func Help() {
 		fmt.Printf("  %-6s: %s\n", command, description)
 	}
 }
+
+func List() error {
+	data, err := os.ReadFile("../vault-test/.vault")
+	if err != nil {
+		return fmt.Errorf("failed to read vault file: %w", err)
+	}
+
+	var vault map[string]Entry
+
+	err = json.Unmarshal(data, &vault)
+	if err != nil {
+		return fmt.Errorf("failed to parse vault data: %w", err)
+	}
+
+	if len(vault) == 0 {
+		fmt.Println("No services saved")
+		return nil
+	}
+
+	fmt.Println("Available services:")
+
+	for service := range vault {
+		fmt.Println("-", service)
+	}
+
+	return nil
+}
