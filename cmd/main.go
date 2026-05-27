@@ -40,6 +40,21 @@ func main() {
 		}
 
 		fmt.Println("vault added!!")
+
+	case "get":
+		if len(os.Args) < 3 {
+			fmt.Println("usage: vault get <service>")
+			return
+		}
+
+		service := os.Args[2]
+
+		err := vault.Get(service)
+
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 	default:
 		fmt.Println("unknown command")
 	}

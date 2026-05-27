@@ -3,6 +3,7 @@ package vault
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 )
 
@@ -43,5 +44,20 @@ func Add(service string, username string, password string) error {
 		return err
 	}
 	os.WriteFile("../vault-test/.vault", updatedData, 0644)
+	return nil
+}
+
+func Get(service string) error {
+	data, err := os.ReadFile("../vault-test/.vault")
+
+	if err != nil {
+		return errors.New("an error ocurred while trying to read your vault")
+	}
+
+	var vault map[string]Entry
+
+	err = json.Unmarshal(data, &vault)
+
+	fmt.Printf("service %s pass: %s\n", service, vault[service].Password)
 	return nil
 }
