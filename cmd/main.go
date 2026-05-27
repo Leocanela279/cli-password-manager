@@ -24,10 +24,22 @@ func main() {
 			return
 		}
 	case "add":
-		if len(os.Args) < 4 {
+
+		if len(os.Args) < 5 {
 			fmt.Println("usage: vault add <service> <username> <password>")
 			return
 		}
+
+		service := os.Args[2]
+		username := os.Args[3]
+		password := os.Args[4]
+		err := vault.Add(service, username, password)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		fmt.Println("vault added!!")
 	default:
 		fmt.Println("unknown command")
 	}

@@ -1,10 +1,15 @@
 package vault
 
 import (
+	"encoding/json"
 	"errors"
-	"fmt"
 	"os"
 )
+
+type Entry struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
 
 func Init() error {
 	err := os.WriteFile("../vault-test/.vault", []byte("{}"), 0644)
@@ -15,12 +20,28 @@ func Init() error {
 	return nil
 }
 
-func Add(service string, username string, password string) {
-	data, err := os.ReadFile("../../vault-test/.vault")
+func Add(service string, username string, password string) error {
+	data, err := os.ReadFile("../vault-test/.vault")
 
 	if err != nil {
-		fmt.Println("error while trying to add into the vault")
-		return
+		return errors.New("error while trying to add into the vault")
 	}
-	fmt.Printf("data: %v\n", data)
+	var vault map[string]Entry
+
+	err = json.Unmarshal(data, &vault)
+	if err != nil {
+		return err
+	}
+
+	vault[service] = Entry{
+		Username: username,
+		Password: password,
+	}
+
+	updatedData, err := json.MarshalIndent(vault, "", "  ")
+	if err != nil {
+		return err
+	}
+	os.WriteFile("../vault-test/.vault", updatedData, 0644)
+	return nil
 }
