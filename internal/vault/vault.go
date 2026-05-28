@@ -2,7 +2,6 @@ package vault
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"os"
 )
@@ -15,7 +14,7 @@ type Entry struct {
 func Init() error {
 	err := os.WriteFile("../vault-test/.vault", []byte("{}"), 0644)
 	if err != nil {
-		return errors.New("error while trying vault init")
+		return fmt.Errorf("error while trying vault init: %w", err)
 	}
 
 	return nil
@@ -25,7 +24,7 @@ func Add(service string, username string, password string) error {
 	data, err := os.ReadFile("../vault-test/.vault")
 
 	if err != nil {
-		return errors.New("error while trying to add into the vault")
+		return fmt.Errorf("error while trying to add into the vault: %w", err)
 	}
 	var vault map[string]Entry
 
@@ -51,7 +50,7 @@ func Get(service string) error {
 	data, err := os.ReadFile("../vault-test/.vault")
 
 	if err != nil {
-		return errors.New("an error ocurred while trying to read your vault")
+		return fmt.Errorf("an error ocurred while trying to read your vault: %w", err)
 	}
 
 	var vault map[string]Entry
