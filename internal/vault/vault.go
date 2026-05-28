@@ -69,6 +69,28 @@ func Get(service string) error {
 
 	err = json.Unmarshal(data, &vault)
 
+	if err != nil {
+		return err
+	}
+
+	var intentos int = 0
+
+	for intentos < 3 {
+		fmt.Print("password:")
+		pass, err := term.ReadPassword(int(os.Stdin.Fd()))
+		if err != nil {
+			return fmt.Errorf("error: %w\n", err)
+		}
+		err = crypto.CompareHash(vault.MasterKey, string(pass))
+
+		if err != nil {
+			intentos++
+			fmt.Println(err)
+		}
+
+	}
+
+	fmt.Println()
 	fmt.Printf("service %s pass: %s\n", service, vault.Entries[service].Password)
 	return nil
 }

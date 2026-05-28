@@ -13,3 +13,8 @@ func MakeHash(masterkey string) ([]byte, error) {
 
 	return hash, nil
 }
+
+func CompareHash(masterkey string, pass string) error {
+
+	return bcrypt.CompareHashAndPassword([]byte(masterkey), []byte(pass))
+}
