@@ -23,6 +23,13 @@ func main() {
 			fmt.Println(err)
 			return
 		}
+	case "login":
+		err := vault.Login()
+
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 	case "add":
 
 		if len(os.Args) < 5 {
