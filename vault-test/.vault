@@ -2,6 +2,10 @@
   "username": "leo",
   "masterkey": "$2a$10$6lL9HlvaoAV/1m61U9yWNOBea4ulO6rCCKvML/KPdp6YduHuCKIvW",
   "entries": {
+    "amazon": {
+      "username": "admin",
+      "password": "_\u0004\u0005|/\b\u003c/b\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u001b\u0000\u0000\u0000\u0000\u0000"
+    },
     "netflix": {
       "username": "leocaela279",
       "password": "test"

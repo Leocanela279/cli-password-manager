@@ -45,9 +45,15 @@ func Add(service string, username string, password string) error {
 		vault.Entries = make(map[string]Entry)
 	}
 
+	key := make([]byte, 32)
+	encPass, err := crypto.Encrypt(string(key), password)
+
+	if err != nil {
+		return err
+	}
 	vault.Entries[service] = Entry{
 		Username: username,
-		Password: password,
+		Password: encPass,
 	}
 
 	updatedData, err := json.MarshalIndent(vault, "", "  ")
@@ -81,17 +87,22 @@ func Get(service string) error {
 		if err != nil {
 			return fmt.Errorf("error: %w\n", err)
 		}
+		println()
 		err = crypto.CompareHash(vault.MasterKey, string(pass))
 
 		if err != nil {
 			intentos++
 			fmt.Println(err)
+			continue
 		}
+
+		fmt.Printf("service %s pass: %s\n", service, vault.Entries[service].Password)
+		break
 
 	}
 
 	fmt.Println()
-	fmt.Printf("service %s pass: %s\n", service, vault.Entries[service].Password)
+
 	return nil
 }
 
